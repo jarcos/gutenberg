@@ -27,7 +27,6 @@ import ListViewDropIndicator from './drop-indicator';
 import useListViewClientIds from './use-list-view-client-ids';
 import useListViewDropZone from './use-list-view-drop-zone';
 import { store as blockEditorStore } from '../../store';
-import { hasFocusWithin } from './utils';
 
 const noop = () => {};
 const expanded = ( state, action ) => {
@@ -82,6 +81,7 @@ function ListView(
 		selectedClientIds,
 		selectedBlockParentClientIds,
 	} = useListViewClientIds( blocks );
+	const selectedTreeId = useRef( null );
 	const { selectBlock } = useDispatch( blockEditorStore );
 	const { visibleBlockCount } = useSelect(
 		( select ) => {
@@ -102,6 +102,7 @@ function ListView(
 		( clientId ) => {
 			selectBlock( clientId );
 			onSelect( clientId );
+			selectedTreeId.current = clientId;
 		},
 		[ selectBlock, onSelect ]
 	);
@@ -110,7 +111,6 @@ function ListView(
 	const elementRef = useRef();
 	const treeGridRef = useMergeRefs( [ elementRef, dropZoneRef, ref ] );
 	const isMounted = useRef( false );
-	const hasFocus = hasFocusWithin( elementRef?.current );
 
 	useEffect( () => {
 		isMounted.current = true;
@@ -182,29 +182,28 @@ function ListView(
 			collapse,
 		]
 	);
-
-	// If a selection is made outside the block list,
-	// for example, in the Block Editor,
-	// try to expand the block list tree.
+	// @TODO create custom hooks.
 	useEffect( () => {
+		// If the selectedTreeId is the same as the selected block,
+		// it means that the block was selected usin the block list tree.
+		if ( selectedTreeId.current === selectedClientIds[ 0 ] ) {
+			return;
+		}
+
+		// If the selected block has parents, get the top-level parent.
 		if (
-			! hasFocus &&
 			Array.isArray( selectedBlockParentClientIds ) &&
 			selectedBlockParentClientIds.length
 		) {
+			// If the selected block has parents,
+			// expand the tree branch.
 			setExpandedState( {
 				type: 'expand',
 				clientIds: selectedBlockParentClientIds,
 			} );
 		}
-	}, [ hasFocus, selectedBlockParentClientIds ] );
 
-	useEffect( () => {
-		if (
-			! hasFocus &&
-			Array.isArray( selectedClientIds ) &&
-			selectedClientIds.length
-		) {
+		if ( Array.isArray( selectedClientIds ) && selectedClientIds.length ) {
 			const scrollContainer = getScrollContainer( elementRef.current );
 
 			// Grab the selected id. This is the point at which we can
@@ -219,28 +218,23 @@ function ListView(
 				selectedId = selectedBlockParentClientIds[ 0 ];
 			}
 
-			// Count expanded blocks in the tree.
-			let heightFactor = 0;
+			// Count expanded blocks in the tree up until the selected block,
+			// so we can calculate the scroll container top.
+			let listItemHeightFactor = 0;
 			clientIdsTree.every( ( item ) => {
 				if ( item?.clientId === selectedId ) {
 					return false;
 				}
-				heightFactor += countBlocks( item, expandedState, [] );
+				listItemHeightFactor += countBlocks( item, expandedState, [] );
 				return true;
 			} );
 
+			// @TODO if selected block is already visible in the list prevent scroll.
 			scrollContainer?.scrollTo( {
-				top: heightFactor * BLOCK_LIST_ITEM_HEIGHT,
+				top: listItemHeightFactor * BLOCK_LIST_ITEM_HEIGHT,
 			} );
 		}
-	}, [
-		hasFocus,
-		expandedState,
-		elementRef,
-		clientIdsTree,
-		selectedBlockParentClientIds,
-		selectedClientIds,
-	] );
+	}, [ selectedClientIds[ 0 ] ] );
 
 	return (
 		<AsyncModeProvider value={ true }>
