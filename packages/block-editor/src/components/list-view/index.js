@@ -16,16 +16,16 @@ import {
 	forwardRef,
 } from '@wordpress/element';
 import { __ } from '@wordpress/i18n';
-import { getScrollContainer } from '@wordpress/dom';
 
 /**
  * Internal dependencies
  */
-import ListViewBranch, { countBlocks } from './branch';
+import ListViewBranch from './branch';
 import { ListViewContext } from './context';
 import ListViewDropIndicator from './drop-indicator';
 import useListViewClientIds from './use-list-view-client-ids';
 import useListViewDropZone from './use-list-view-drop-zone';
+import useListViewOpenSelectedItem from './use-list-view-open-selected-item';
 import { store as blockEditorStore } from '../../store';
 
 const noop = () => {};
@@ -45,7 +45,7 @@ const expanded = ( state, action ) => {
 	return state;
 };
 
-const BLOCK_LIST_ITEM_HEIGHT = 36;
+export const BLOCK_LIST_ITEM_HEIGHT = 36;
 
 /**
  * Wrap `ListViewRows` with `TreeGrid`. ListViewRows is a
@@ -79,9 +79,7 @@ function ListView(
 		clientIdsTree,
 		draggedClientIds,
 		selectedClientIds,
-		selectedBlockParentClientIds,
 	} = useListViewClientIds( blocks );
-	const selectedTreeId = useRef( null );
 	const { selectBlock } = useDispatch( blockEditorStore );
 	const { visibleBlockCount } = useSelect(
 		( select ) => {
@@ -98,20 +96,26 @@ function ListView(
 		},
 		[ draggedClientIds ]
 	);
-	const selectEditorBlock = useCallback(
-		( clientId ) => {
-			selectBlock( clientId );
-			onSelect( clientId );
-			selectedTreeId.current = clientId;
-		},
-		[ selectBlock, onSelect ]
-	);
 	const [ expandedState, setExpandedState ] = useReducer( expanded, {} );
 	const { ref: dropZoneRef, target: blockDropTarget } = useListViewDropZone();
 	const elementRef = useRef();
 	const treeGridRef = useMergeRefs( [ elementRef, dropZoneRef, ref ] );
 	const isMounted = useRef( false );
-
+	const { setSelectedTreeId } = useListViewOpenSelectedItem( {
+		firstSelectedBlockClientId: selectedClientIds[ 0 ],
+		clientIdsTree,
+		scrollContainerElement: elementRef?.current,
+		expandedState,
+		setExpandedState,
+	} );
+	const selectEditorBlock = useCallback(
+		( clientId ) => {
+			selectBlock( clientId );
+			onSelect( clientId );
+			setSelectedTreeId( clientId );
+		},
+		[ selectBlock, onSelect ]
+	);
 	useEffect( () => {
 		isMounted.current = true;
 	}, [] );
@@ -182,59 +186,6 @@ function ListView(
 			collapse,
 		]
 	);
-	// @TODO create custom hooks.
-	useEffect( () => {
-		// If the selectedTreeId is the same as the selected block,
-		// it means that the block was selected usin the block list tree.
-		if ( selectedTreeId.current === selectedClientIds[ 0 ] ) {
-			return;
-		}
-
-		// If the selected block has parents, get the top-level parent.
-		if (
-			Array.isArray( selectedBlockParentClientIds ) &&
-			selectedBlockParentClientIds.length
-		) {
-			// If the selected block has parents,
-			// expand the tree branch.
-			setExpandedState( {
-				type: 'expand',
-				clientIds: selectedBlockParentClientIds,
-			} );
-		}
-
-		if ( Array.isArray( selectedClientIds ) && selectedClientIds.length ) {
-			const scrollContainer = getScrollContainer( elementRef.current );
-
-			// Grab the selected id. This is the point at which we can
-			// stop counting blocks in the tree.
-			let selectedId = selectedClientIds[ 0 ];
-
-			// If the selected block has parents, get the top-level parent.
-			if (
-				Array.isArray( selectedBlockParentClientIds ) &&
-				selectedBlockParentClientIds.length
-			) {
-				selectedId = selectedBlockParentClientIds[ 0 ];
-			}
-
-			// Count expanded blocks in the tree up until the selected block,
-			// so we can calculate the scroll container top.
-			let listItemHeightFactor = 0;
-			clientIdsTree.every( ( item ) => {
-				if ( item?.clientId === selectedId ) {
-					return false;
-				}
-				listItemHeightFactor += countBlocks( item, expandedState, [] );
-				return true;
-			} );
-
-			// @TODO if selected block is already visible in the list prevent scroll.
-			scrollContainer?.scrollTo( {
-				top: listItemHeightFactor * BLOCK_LIST_ITEM_HEIGHT,
-			} );
-		}
-	}, [ selectedClientIds[ 0 ] ] );
 
 	return (
 		<AsyncModeProvider value={ true }>
