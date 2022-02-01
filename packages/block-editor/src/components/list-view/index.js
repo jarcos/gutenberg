@@ -103,9 +103,6 @@ function ListView(
 	const isMounted = useRef( false );
 	const { setSelectedTreeId } = useListViewOpenSelectedItem( {
 		firstSelectedBlockClientId: selectedClientIds[ 0 ],
-		clientIdsTree,
-		scrollContainerElement: elementRef?.current,
-		expandedState,
 		setExpandedState,
 	} );
 	const selectEditorBlock = useCallback(
