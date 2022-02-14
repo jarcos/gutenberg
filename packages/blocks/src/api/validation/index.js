@@ -756,7 +756,7 @@ export function validateBlock( block, blockTypeOrName = block.name ) {
  *
  * Logs to console in development environments when invalid.
  *
- * @deprecated Use validateBlock instead to avoid data loss with nested blocks.
+ * @deprecated Use validateBlock instead to avoid data loss.
  *
  * @param {string|Object} blockTypeOrName      Block type.
  * @param {Object}        attributes           Parsed block attributes.
@@ -769,7 +769,7 @@ export function isValidBlockContent(
 	attributes,
 	originalBlockContent
 ) {
-	deprecated( 'isValidBlockContent loses inner block data', {
+	deprecated( 'isValidBlockContent introduces opportunity for data loss', {
 		since: '12.6',
 		plugin: 'Gutenberg',
 		alternative: 'validateBlock',

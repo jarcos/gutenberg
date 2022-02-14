@@ -566,7 +566,7 @@ _Returns_
 
 ### isValidBlockContent
 
-> **Deprecated** Use validateBlock instead to avoid data loss with nested blocks.
+> **Deprecated** Use validateBlock instead to avoid data loss.
 
 Returns true if the parsed block is valid given the input content. A block
 is considered valid if, when serialized with assumed attributes, the content
