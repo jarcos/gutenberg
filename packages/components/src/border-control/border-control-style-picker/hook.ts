@@ -10,20 +10,20 @@ import * as styles from '../styles';
 import { useContextSystem, WordPressComponentProps } from '../../ui/context';
 import { useCx } from '../../utils/hooks/use-cx';
 
-import type { BorderStyleControlProps } from '../types';
+import type { StylePickerProps } from '../types';
 
-export function useBorderStyleControl(
-	props: WordPressComponentProps< BorderStyleControlProps, 'div' >
+export function useBorderControlStylePicker(
+	props: WordPressComponentProps< StylePickerProps, 'div' >
 ) {
 	const { className, ...otherProps } = useContextSystem(
 		props,
-		'BorderStyleControl'
+		'BorderControlStylePicker'
 	);
 
 	// Generate class names.
 	const cx = useCx();
 	const classes = useMemo( () => {
-		return cx( styles.BorderStyleControl, className );
+		return cx( styles.BorderControlStylePicker, className );
 	}, [ className ] );
 
 	const buttonClassName = useMemo( () => {

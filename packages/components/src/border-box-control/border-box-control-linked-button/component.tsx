@@ -10,15 +10,19 @@ import { __ } from '@wordpress/i18n';
 import Button from '../../button';
 import Tooltip from '../../tooltip';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
-import { useLinkedButton } from './hook';
+import { useBorderBoxControlLinkedButton } from './hook';
 
 import type { LinkedButtonProps } from '../types';
 
-const LinkedButton = (
+const BorderBoxControlLinkedButton = (
 	props: WordPressComponentProps< LinkedButtonProps, 'div' >,
 	forwardedRef: React.Ref< any >
 ) => {
-	const { className, isLinked, ...buttonProps } = useLinkedButton( props );
+	const {
+		className,
+		isLinked,
+		...buttonProps
+	} = useBorderBoxControlLinkedButton( props );
 	const label = isLinked ? __( 'Unlink sides' ) : __( 'Link sides' );
 
 	return (
@@ -38,5 +42,8 @@ const LinkedButton = (
 	);
 };
 
-const ConnectedLinkedButton = contextConnect( LinkedButton, 'LinkedButton' );
-export default ConnectedLinkedButton;
+const ConnectedBorderBoxControlLinkedButton = contextConnect(
+	BorderBoxControlLinkedButton,
+	'BorderBoxControlLinkedButton'
+);
+export default ConnectedBorderBoxControlLinkedButton;

@@ -6,8 +6,8 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import LinkedButton from '../linked-button';
-import SplitBorderControl from '../split-border-control';
+import BorderBoxControlLinkedButton from '../border-box-control-linked-button';
+import BorderBoxControlSplitControls from '../border-box-control-split-controls';
 import { BorderControl } from '../../border-control';
 import { HStack } from '../../h-stack';
 import { StyledLabel } from '../../base-control/styles/base-control-styles';
@@ -16,9 +16,9 @@ import { VisuallyHidden } from '../../visually-hidden';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
 import { useBorderBoxControl } from './hook';
 
-import type { BorderBoxControlProps, BorderLabelProps } from '../types';
+import type { BorderBoxControlProps, LabelProps } from '../types';
 
-const BorderLabel = ( props: BorderLabelProps ) => {
+const BorderLabel = ( props: LabelProps ) => {
 	const { label, hideLabelFromVision } = props;
 
 	if ( ! label ) {
@@ -87,7 +87,7 @@ const BorderBoxControl = (
 						}
 					/>
 				) : (
-					<SplitBorderControl
+					<BorderBoxControlSplitControls
 						colors={ colors }
 						disableCustomColors={ disableCustomColors }
 						enableAlpha={ enableAlpha }
@@ -102,7 +102,10 @@ const BorderBoxControl = (
 						}
 					/>
 				) }
-				<LinkedButton onClick={ toggleLinked } isLinked={ isLinked } />
+				<BorderBoxControlLinkedButton
+					onClick={ toggleLinked }
+					isLinked={ isLinked }
+				/>
 			</HStack>
 		</View>
 	);

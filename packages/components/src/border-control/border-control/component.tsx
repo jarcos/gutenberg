@@ -1,7 +1,7 @@
 /**
  * Internal dependencies
  */
-import BorderDropdown from '../border-dropdown';
+import BorderControlDropdown from '../border-control-dropdown';
 import UnitControl from '../../unit-control';
 import RangeControl from '../../range-control';
 import { HStack } from '../../h-stack';
@@ -11,9 +11,9 @@ import { VisuallyHidden } from '../../visually-hidden';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
 import { useBorderControl } from './hook';
 
-import type { BorderControlProps, BorderLabelProps } from '../types';
+import type { BorderControlProps, LabelProps } from '../types';
 
-const BorderLabel = ( props: BorderLabelProps ) => {
+const BorderLabel = ( props: LabelProps ) => {
 	const { label, hideLabelFromVision } = props;
 
 	if ( ! label ) {
@@ -63,7 +63,7 @@ const BorderControl = (
 			/>
 			<HStack spacing={ 3 }>
 				<HStack className={ innerWrapperClassName }>
-					<BorderDropdown
+					<BorderControlDropdown
 						border={ border }
 						colors={ colors }
 						disableCustomColors={ disableCustomColors }

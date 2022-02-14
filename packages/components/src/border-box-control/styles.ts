@@ -9,21 +9,19 @@ import { css } from '@emotion/react';
 import { COLORS, CONFIG } from '../utils';
 import { space } from '../ui/utils/space';
 
-export const BorderBoxControl = css`
-	/* TODO: Remove this if not styling is required. */
-`;
+export const BorderBoxControl = css``;
 
 export const LinkedBorderControl = css`
 	flex: 1;
 `;
 
-export const LinkedButton = css`
+export const BorderBoxControlLinkedButton = css`
 	flex: 0;
 	flex-basis: 36px;
 	margin-top: 7px;
 `;
 
-export const BorderVisualizer = css`
+export const BorderBoxControlVisualizer = css`
 	border: ${ CONFIG.borderWidth } solid ${ COLORS.gray[ 200 ] };
 	position: absolute;
 	top: 20px;
@@ -32,7 +30,7 @@ export const BorderVisualizer = css`
 	left: 30px;
 `;
 
-export const SplitBorderControl = css`
+export const BorderBoxControlSplitControls = css`
 	display: grid;
 	position: relative;
 	gap: ${ space( 4 ) };

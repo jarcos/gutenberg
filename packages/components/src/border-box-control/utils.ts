@@ -124,10 +124,6 @@ export const getShorthandBorderStyle = ( border?: Border ) => {
 	const hasVisibleBorder = ( !! width && width !== '0' ) || !! color;
 	const borderStyle = hasVisibleBorder ? style || 'solid' : style;
 
-	// TODO: Can I get a `'0'` value from UnitControl?
-	// const borderProps = [ width, borderStyle, color ];
-	// return borderProps.filter( ( prop ) => prop !== undefined ).join( ' ' );
-
 	return [ width, borderStyle, color ].filter( Boolean ).join( ' ' );
 };
 

@@ -6,16 +6,16 @@ import { __ } from '@wordpress/i18n';
 /**
  * Internal dependencies
  */
-import BorderVisualizer from '../border-visualizer';
+import BorderBoxControlVisualizer from '../border-box-control-visualizer';
 import { BorderControl } from '../../border-control';
 import { View } from '../../view';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
-import { useSplitBorderControl } from './hook';
+import { useBorderBoxControlSplitControls } from './hook';
 
-import type { SplitBorderControlProps } from '../types';
+import type { SplitControlsProps } from '../types';
 
-const SplitBorderControl = (
-	props: WordPressComponentProps< SplitBorderControlProps, 'div' >,
+const BorderBoxControlSplitControls = (
+	props: WordPressComponentProps< SplitControlsProps, 'div' >,
 	forwardedRef: React.Ref< any >
 ) => {
 	const {
@@ -29,7 +29,7 @@ const SplitBorderControl = (
 		__experimentalHasMultipleOrigins,
 		__experimentalIsRenderedInSidebar,
 		...otherProps
-	} = useSplitBorderControl( props );
+	} = useBorderBoxControlSplitControls( props );
 
 	const sharedBorderControlProps = {
 		colors,
@@ -43,7 +43,7 @@ const SplitBorderControl = (
 
 	return (
 		<View { ...otherProps } ref={ forwardedRef }>
-			<BorderVisualizer value={ value } />
+			<BorderBoxControlVisualizer value={ value } />
 			<BorderControl
 				className={ centeredClassName }
 				onChange={ ( newBorder ) => onChange( newBorder, 'top' ) }
@@ -70,8 +70,8 @@ const SplitBorderControl = (
 	);
 };
 
-const ConnectedSplitBorderControl = contextConnect(
-	SplitBorderControl,
-	'SplitBorderControl'
+const ConnectedBorderBoxControlSplitControls = contextConnect(
+	BorderBoxControlSplitControls,
+	'BorderBoxControlSplitControls'
 );
-export default ConnectedSplitBorderControl;
+export default ConnectedBorderBoxControlSplitControls;

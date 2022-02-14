@@ -29,7 +29,6 @@ export const InnerWrapper = css`
 	/*
 	 * Forces the width control to fill available space given UnitControl
 	 * passes its className directly through to the input.
-	 * TODO: Extend UnitControl to support custom classes on its wrapper.
 	 */
 	> div:last-child {
 		flex: 1;
@@ -49,12 +48,11 @@ export const WrapperWidth = ( width: string ) => {
 	`;
 };
 
-export const BorderDropdown = css`
+export const BorderControlDropdown = css`
 	border-radius: 1px 0 0 1px;
 	border-right: ${ CONFIG.borderWidth } solid ${ COLORS.gray[ 200 ] };
 	background: #fff;
 
-	/* TODO: Reduce specificity here and try to find composable classnames for indicator */
 	&& > button {
 		padding: ${ space( 1 ) };
 		border-radius: inherit;
@@ -79,14 +77,14 @@ export const BorderDropdown = css`
 	}
 `;
 
-export const BorderPopover = css`
+export const BorderControlPopover = css`
 	/* Remove padding from content, this will be re-added via inner elements*/
 	&& > div > div {
 		padding: 0;
 	}
 `;
 
-export const BorderPopoverControls = css`
+export const BorderControlPopoverControls = css`
 	padding: ${ space( 4 ) };
 
 	> div:first-of-type > ${ StyledLabel } {
@@ -100,7 +98,7 @@ export const BorderPopoverControls = css`
 	}
 `;
 
-export const BorderPopoverContent = css``;
+export const BorderControlPopoverContent = css``;
 export const BorderColorIndicator = css``;
 
 export const ResetButton = css`
@@ -127,7 +125,7 @@ export const BorderWidthControl = css`
 	}
 `;
 
-export const BorderStyleControl = css`
+export const BorderControlStylePicker = css`
 	> label {
 		display: block;
 		font-weight: 500;

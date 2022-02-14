@@ -7,7 +7,7 @@ import { closeSmall } from '@wordpress/icons';
 /**
  * Internal dependencies
  */
-import BorderStyleControl from '../border-style-control';
+import BorderControlStylePicker from '../border-control-style-picker';
 import Button from '../../button';
 // @ts-ignore
 import ColorIndicator from '../../color-indicator';
@@ -17,14 +17,14 @@ import Dropdown from '../../dropdown';
 import { HStack } from '../../h-stack';
 import { VStack } from '../../v-stack';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
-import { useBorderDropdown } from './hook';
+import { useBorderControlDropdown } from './hook';
 import { StyledLabel } from '../../base-control/styles/base-control-styles';
 
-import type { BorderDropdownProps, BorderPopoverProps } from '../types';
+import type { DropdownProps, PopoverProps } from '../types';
 const noop = () => undefined;
 
-const BorderDropdown = (
-	props: WordPressComponentProps< BorderDropdownProps, 'div' >,
+const BorderControlDropdown = (
+	props: WordPressComponentProps< DropdownProps, 'div' >,
 	forwardedRef: React.Ref< any >
 ) => {
 	const {
@@ -44,7 +44,7 @@ const BorderDropdown = (
 		resetButtonClassName,
 		enableStyle = true,
 		...otherProps
-	} = useBorderDropdown( props );
+	} = useBorderControlDropdown( props );
 
 	const { color, style } = border || {};
 	const fallbackColor = !! style && style !== 'none' ? '#ddd' : undefined;
@@ -73,7 +73,7 @@ const BorderDropdown = (
 		</Button>
 	);
 
-	const renderContent = ( { onClose }: BorderPopoverProps ) => (
+	const renderContent = ( { onClose }: PopoverProps ) => (
 		<>
 			<VStack className={ popoverControlsClassName } spacing={ 6 }>
 				<HStack>
@@ -100,13 +100,12 @@ const BorderDropdown = (
 					enableAlpha={ enableAlpha }
 				/>
 				{ enableStyle && (
-					<BorderStyleControl
+					<BorderControlStylePicker
 						label={ __( 'Style' ) }
 						value={ style }
 						onChange={ onStyleChange }
 					/>
 				) }
-				{ /* TODO: Add Border Style and change this to BorderPopover */ }
 			</VStack>
 			<Button
 				className={ resetButtonClassName }
@@ -132,9 +131,9 @@ const BorderDropdown = (
 	);
 };
 
-const ConnectedBorderDropdown = contextConnect(
-	BorderDropdown,
-	'BorderControl'
+const ConnectedBorderControlDropdown = contextConnect(
+	BorderControlDropdown,
+	'BorderControlDropdown'
 );
 
-export default ConnectedBorderDropdown;
+export default ConnectedBorderControlDropdown;

@@ -83,7 +83,7 @@ export type LinkedButtonProps = {
 	onClick: () => void;
 };
 
-export type BorderVisualizerProps = {
+export type VisualizerProps = {
 	/**
 	 * An object representing the current border configuration. It contains
 	 * properties for each side, with each side an object reflecting the border
@@ -92,7 +92,7 @@ export type BorderVisualizerProps = {
 	value?: Borders;
 };
 
-export type SplitBorderControlProps = {
+export type SplitControlsProps = {
 	/**
 	 * An array of color definitions. This may also be a multi-dimensional array
 	 * where colors are organized by multiple origins.
@@ -137,7 +137,7 @@ export type SplitBorderControlProps = {
 	__experimentalIsRenderedInSidebar?: boolean;
 };
 
-export type BorderLabelProps = {
+export type LabelProps = {
 	/**
 	 * Provides control over whether the label will only be visible to
 	 * screen readers.

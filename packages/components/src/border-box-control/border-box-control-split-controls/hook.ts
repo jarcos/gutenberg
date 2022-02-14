@@ -10,21 +10,25 @@ import * as styles from '../styles';
 import { useContextSystem, WordPressComponentProps } from '../../ui/context';
 import { useCx } from '../../utils/hooks/use-cx';
 
-import type { BorderVisualizerProps } from '../types';
+import type { SplitControlsProps } from '../types';
 
-export function useBorderVisualizer(
-	props: WordPressComponentProps< BorderVisualizerProps, 'div' >
+export function useBorderBoxControlSplitControls(
+	props: WordPressComponentProps< SplitControlsProps, 'div' >
 ) {
 	const { className, ...otherProps } = useContextSystem(
 		props,
-		'BorderVisualizer'
+		'BorderBoxControlSplitControls'
 	);
 
 	// Generate class names.
 	const cx = useCx();
 	const classes = useMemo( () => {
-		return cx( styles.BorderVisualizer, className );
+		return cx( styles.BorderBoxControlSplitControls, className );
 	}, [ className ] );
 
-	return { ...otherProps, className: classes };
+	const centeredClassName = useMemo( () => {
+		return cx( styles.CenteredBorderControl, className );
+	}, [] );
+
+	return { ...otherProps, centeredClassName, className: classes };
 }

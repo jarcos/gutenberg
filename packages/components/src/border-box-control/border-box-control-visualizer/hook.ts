@@ -10,20 +10,20 @@ import * as styles from '../styles';
 import { useContextSystem, WordPressComponentProps } from '../../ui/context';
 import { useCx } from '../../utils/hooks/use-cx';
 
-import type { LinkedButtonProps } from '../types';
+import type { VisualizerProps } from '../types';
 
-export function useLinkedButton(
-	props: WordPressComponentProps< LinkedButtonProps, 'div' >
+export function useBorderBoxControlVisualizer(
+	props: WordPressComponentProps< VisualizerProps, 'div' >
 ) {
 	const { className, ...otherProps } = useContextSystem(
 		props,
-		'LinkedButton'
+		'BorderBoxControlVisualizer'
 	);
 
 	// Generate class names.
 	const cx = useCx();
 	const classes = useMemo( () => {
-		return cx( styles.LinkedButton, className );
+		return cx( styles.BorderBoxControlVisualizer, className );
 	}, [ className ] );
 
 	return { ...otherProps, className: classes };

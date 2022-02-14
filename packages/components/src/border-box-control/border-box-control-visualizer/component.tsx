@@ -9,15 +9,15 @@ import { __ } from '@wordpress/i18n';
 import { View } from '../../view';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
 import { getClampedWidthBorderStyle } from '../utils';
-import { useBorderVisualizer } from './hook';
+import { useBorderBoxControlVisualizer } from './hook';
 
-import type { BorderVisualizerProps } from '../types';
+import type { VisualizerProps } from '../types';
 
-const BorderVisualizer = (
-	props: WordPressComponentProps< BorderVisualizerProps, 'div' >,
+const BorderBoxControlVisualizer = (
+	props: WordPressComponentProps< VisualizerProps, 'div' >,
 	forwardedRef: React.Ref< any >
 ) => {
-	const { value, ...otherProps } = useBorderVisualizer( props );
+	const { value, ...otherProps } = useBorderBoxControlVisualizer( props );
 	const styles = {
 		borderTop: getClampedWidthBorderStyle( value?.top ),
 		borderRight: getClampedWidthBorderStyle( value?.right ),
@@ -28,8 +28,8 @@ const BorderVisualizer = (
 	return <View { ...otherProps } ref={ forwardedRef } style={ styles } />;
 };
 
-const ConnectedBorderVisualizer = contextConnect(
-	BorderVisualizer,
-	'BorderVisualizer'
+const ConnectedBorderBoxControlVisualizer = contextConnect(
+	BorderBoxControlVisualizer,
+	'BorderBoxControlVisualizer'
 );
-export default ConnectedBorderVisualizer;
+export default ConnectedBorderBoxControlVisualizer;

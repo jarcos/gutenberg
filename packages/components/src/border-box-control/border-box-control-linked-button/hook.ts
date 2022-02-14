@@ -10,25 +10,21 @@ import * as styles from '../styles';
 import { useContextSystem, WordPressComponentProps } from '../../ui/context';
 import { useCx } from '../../utils/hooks/use-cx';
 
-import type { SplitBorderControlProps } from '../types';
+import type { LinkedButtonProps } from '../types';
 
-export function useSplitBorderControl(
-	props: WordPressComponentProps< SplitBorderControlProps, 'div' >
+export function useBorderBoxControlLinkedButton(
+	props: WordPressComponentProps< LinkedButtonProps, 'div' >
 ) {
 	const { className, ...otherProps } = useContextSystem(
 		props,
-		'SplitBorderControl'
+		'BorderBoxControlLinkedButton'
 	);
 
 	// Generate class names.
 	const cx = useCx();
 	const classes = useMemo( () => {
-		return cx( styles.SplitBorderControl, className );
+		return cx( styles.BorderBoxControlLinkedButton, className );
 	}, [ className ] );
 
-	const centeredClassName = useMemo( () => {
-		return cx( styles.CenteredBorderControl, className );
-	}, [] );
-
-	return { ...otherProps, centeredClassName, className: classes };
+	return { ...otherProps, className: classes };
 }

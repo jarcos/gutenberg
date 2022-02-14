@@ -12,9 +12,9 @@ import { StyledLabel } from '../../base-control/styles/base-control-styles';
 import { View } from '../../view';
 import { VisuallyHidden } from '../../visually-hidden';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
-import { useBorderStyleControl } from './hook';
+import { useBorderControlStylePicker } from './hook';
 
-import type { BorderLabelProps, BorderStyleControlProps } from '../types';
+import type { LabelProps, StylePickerProps } from '../types';
 
 const BORDER_STYLES = [
 	{ label: __( 'Solid' ), icon: lineSolid, value: 'solid' },
@@ -22,7 +22,7 @@ const BORDER_STYLES = [
 	{ label: __( 'Dotted' ), icon: lineDotted, value: 'dotted' },
 ];
 
-const Label = ( props: BorderLabelProps ) => {
+const Label = ( props: LabelProps ) => {
 	const { label, hideLabelFromVision } = props;
 
 	if ( ! label ) {
@@ -36,8 +36,8 @@ const Label = ( props: BorderLabelProps ) => {
 	);
 };
 
-const BorderStyleControl = (
-	props: WordPressComponentProps< BorderStyleControlProps, 'div' >,
+const BorderControlStylePicker = (
+	props: WordPressComponentProps< StylePickerProps, 'div' >,
 	forwardedRef: React.Ref< any >
 ) => {
 	const {
@@ -47,7 +47,7 @@ const BorderStyleControl = (
 		onChange,
 		value,
 		...otherProps
-	} = useBorderStyleControl( props );
+	} = useBorderControlStylePicker( props );
 
 	return (
 		<View { ...otherProps } ref={ forwardedRef }>
@@ -78,9 +78,9 @@ const BorderStyleControl = (
 	);
 };
 
-const ConnectedBorderStyleControl = contextConnect(
-	BorderStyleControl,
-	'BorderStyleControl'
+const ConnectedBorderControlStylePicker = contextConnect(
+	BorderControlStylePicker,
+	'BorderControlStylePicker'
 );
 
-export default ConnectedBorderStyleControl;
+export default ConnectedBorderControlStylePicker;

@@ -11,10 +11,10 @@ import { parseUnit } from '../../unit-control/utils';
 import { useContextSystem, WordPressComponentProps } from '../../ui/context';
 import { useCx } from '../../utils/hooks/use-cx';
 
-import type { BorderDropdownProps } from '../types';
+import type { DropdownProps } from '../types';
 
-export function useBorderDropdown(
-	props: WordPressComponentProps< BorderDropdownProps, 'div' >
+export function useBorderControlDropdown(
+	props: WordPressComponentProps< DropdownProps, 'div' >
 ) {
 	const {
 		border,
@@ -23,7 +23,7 @@ export function useBorderDropdown(
 		onChange,
 		previousStyleSelection,
 		...otherProps
-	} = useContextSystem( props, 'BorderDropdown' );
+	} = useContextSystem( props, 'BorderControlDropdown' );
 
 	const [ widthValue ] = parseUnit( border?.width );
 	const hasZeroWidth = widthValue === 0;
@@ -52,7 +52,7 @@ export function useBorderDropdown(
 	// Generate class names.
 	const cx = useCx();
 	const classes = useMemo( () => {
-		return cx( styles.BorderDropdown, className );
+		return cx( styles.BorderControlDropdown, className );
 	}, [ className ] );
 
 	const indicatorClassName = useMemo( () => {
@@ -60,15 +60,15 @@ export function useBorderDropdown(
 	}, [] );
 
 	const popoverClassName = useMemo( () => {
-		return cx( styles.BorderPopover );
+		return cx( styles.BorderControlPopover );
 	}, [] );
 
 	const popoverControlsClassName = useMemo( () => {
-		return cx( styles.BorderPopoverControls );
+		return cx( styles.BorderControlPopoverControls );
 	}, [] );
 
 	const popoverContentClassName = useMemo( () => {
-		return cx( styles.BorderPopoverContent );
+		return cx( styles.BorderControlPopoverContent );
 	}, [] );
 
 	const resetButtonClassName = useMemo( () => {

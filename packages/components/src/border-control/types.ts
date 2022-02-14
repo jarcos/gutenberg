@@ -81,7 +81,7 @@ export type BorderControlProps = {
 	__experimentalIsRenderedInSidebar?: boolean;
 };
 
-export type BorderDropdownProps = {
+export type DropdownProps = {
 	/**
 	 * An object representing a border or `undefined`. This component will
 	 * extract the border color and style selections from this object to use as
@@ -128,7 +128,7 @@ export type BorderDropdownProps = {
 	__experimentalIsRenderedInSidebar?: boolean;
 };
 
-export type BorderStyleControlProps = {
+export type StylePickerProps = {
 	/**
 	 * Provides control over whether the label will only be visible to
 	 * screen readers.
@@ -150,11 +150,11 @@ export type BorderStyleControlProps = {
 	value?: string;
 };
 
-export type BorderPopoverProps = {
+export type PopoverProps = {
 	onClose: () => void;
 };
 
-export type BorderLabelProps = {
+export type LabelProps = {
 	label?: string;
 	hideLabelFromVision?: boolean;
 };
