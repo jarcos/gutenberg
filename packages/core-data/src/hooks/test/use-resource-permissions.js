@@ -64,6 +64,44 @@ describe( 'useEntityRecord', () => {
 			isResolving: false,
 			hasResolved: true,
 			canCreate: true,
+		} );
+	} );
+
+	it( 'retrieves the relevant permissions for a resource with a key', async () => {
+		triggerFetch.mockImplementation( () => ( {
+			headers: {
+				Allow: 'POST',
+			},
+		} ) );
+		let data;
+		const TestComponent = () => {
+			data = useResourcePermissions( 'widgets', 1 );
+			return <div />;
+		};
+		render(
+			<RegistryProvider value={ registry }>
+				<TestComponent />
+			</RegistryProvider>
+		);
+		expect( data ).toEqual( {
+			status: 'IDLE',
+			isResolving: false,
+			hasResolved: false,
+			canCreate: false,
+			canUpdate: false,
+			canDelete: false,
+		} );
+
+		// Required to make sure no updates happen outside of act()
+		await act( async () => {
+			jest.advanceTimersByTime( 1 );
+		} );
+
+		expect( data ).toEqual( {
+			status: 'SUCCESS',
+			isResolving: false,
+			hasResolved: true,
+			canCreate: true,
 			canUpdate: false,
 			canDelete: false,
 		} );

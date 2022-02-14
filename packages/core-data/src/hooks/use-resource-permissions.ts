@@ -5,7 +5,73 @@ import { store as coreStore } from '../';
 import { Status } from './constants';
 import useQuerySelect from './use-query-select';
 
-export default function __experimentalUseResourcePermissions( resource, id ) {
+interface GlobalResourcePermissionsResolution {
+	/** Can the current user create new resources of this type? */
+	canCreate: boolean;
+}
+interface SpecificResourcePermissionsResolution {
+	/** Can the current user update resources of this type? */
+	canUpdate: boolean;
+	/** Can the current user delete resources of this type? */
+	canDelete: boolean;
+}
+interface ResolutionDetails {
+	/** Resolution status */
+	status: Status;
+	/**
+	 * Is the data still being resolved?
+	 */
+	isResolving: boolean;
+	/**
+	 * Is the data resolved by now?
+	 */
+	hasResolved: boolean;
+}
+
+type ResourcePermissionsResolution< IdType > = ResolutionDetails &
+	GlobalResourcePermissionsResolution &
+	( IdType extends void ? SpecificResourcePermissionsResolution : {} );
+
+/**
+ * Resolves resource permissions.
+ *
+ * @param  resource The resource in question, e.g. media.
+ * @param  id       ID of a specific resource entry, if needed, e.g. 10.
+ *
+ * @example
+ * ```js
+ * import { useResourcePermissions } from '@wordpress/core-data';
+ *
+ * function PagesList() {
+ *   const { canCreate, isResolving } = useResourcePermissions( 'pages' );
+ *
+ *   if ( isResolving ) {
+ *     return 'Loading ...';
+ *   }
+ *
+ *   return (
+ *     <div>
+ *       {canCreate ? (<button>+ Create a new page</button>) : false}
+ *       // ...
+ *     </div>
+ *   );
+ * }
+ *
+ * // Rendered in the application:
+ * // <PagesList />
+ * ```
+ *
+ * In the above example, when `PagesList` is rendered into an
+ * application, the appropriate permissions and the resolution details will be retrieved from
+ * the store state using `canUser()`, or resolved if missing.
+ *
+ * @return {ResourcePermissionsResolution<IdType>} Entity records data.
+ * @template IdType
+ */
+export default function __experimentalUseResourcePermissions< IdType = void >(
+	resource: string,
+	id: IdType
+) {
 	return useQuerySelect(
 		( resolve ) => {
 			const { canUser } = resolve( coreStore );
