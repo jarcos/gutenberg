@@ -355,7 +355,7 @@ function mapResolveSelectors( selectors, store ) {
 				// trigger the selector (to trigger the resolver)
 				const result = getResult();
 				if ( hasFinished() ) {
-					finalize( result );
+					return finalize( result );
 				}
 
 				const unsubscribe = store.subscribe( () => {
