@@ -7,7 +7,6 @@ import { getBlockSupport } from '@wordpress/blocks';
 import {
 	__experimentalUseCustomUnits as useCustomUnits,
 	__experimentalBoxControl as BoxControl,
-	__experimentalUnitControl as UnitControl,
 } from '@wordpress/components';
 
 /**
@@ -108,17 +107,11 @@ export function GapEdit( props ) {
 	}
 
 	const onChange = ( next ) => {
-		let newValue = next;
-		if ( typeof next === 'object' ) {
-			const row = next?.top || 0;
-			const column = next?.left || 0;
-			newValue = row === column ? row : `${ row } ${ column }`;
-		}
 		const newStyle = {
 			...style,
 			spacing: {
 				...style?.spacing,
-				blockGap: newValue,
+				blockGap: next,
 			},
 		};
 
@@ -140,59 +133,18 @@ export function GapEdit( props ) {
 		}
 	};
 
-	const blockGapValue = style?.spacing?.blockGap;
-	const boxValuesArray = blockGapValue
-		? blockGapValue.split( ' ' )
-		: [ undefined ];
-	const boxValues = {
-		left: undefined,
-		top: undefined,
-		bottom: undefined,
-		right: undefined,
-	};
-
-	if ( boxValuesArray.length === 1 ) {
-		boxValues.left = boxValuesArray[ 0 ];
-		boxValues.right = boxValuesArray[ 0 ];
-		boxValues.top = boxValuesArray[ 0 ];
-		boxValues.bottom = boxValuesArray[ 0 ];
-	}
-
-	if ( boxValuesArray.length === 2 ) {
-		boxValues.left = boxValuesArray[ 1 ];
-		boxValues.right = boxValuesArray[ 1 ];
-		boxValues.top = boxValuesArray[ 0 ];
-		boxValues.bottom = boxValuesArray[ 0 ];
-	}
-
-	// The default combined value we'll take from row.
-	const defaultValue = boxValues.top;
-
 	return Platform.select( {
 		web: (
 			<>
-				{ splitOnAxis ? (
-					<BoxControl
-						label={ __( 'Block spacing' ) }
-						min={ 0 }
-						onChange={ onChange }
-						units={ units }
-						sides={ sides }
-						values={ boxValues }
-						allowReset={ false }
-						splitOnAxis={ splitOnAxis }
-					/>
-				) : (
-					<UnitControl
-						label={ __( 'Block spacing' ) }
-						__unstableInputWidth="80px"
-						min={ 0 }
-						onChange={ onChange }
-						units={ units }
-						// Default to `row` for combined values.
-						value={ defaultValue }
-					/>
-				) }
+				<BoxControl
+					values={ style?.spacing?.blockGap }
+					onChange={ onChange }
+					label={ __( 'Block spacing' ) }
+					sides={ sides }
+					units={ units }
+					allowReset={ false }
+					splitOnAxis={ splitOnAxis }
+				/>
 			</>
 		),
 		native: null,

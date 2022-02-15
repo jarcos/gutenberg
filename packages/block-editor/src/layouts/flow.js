@@ -110,7 +110,7 @@ export default {
 		const blockGapSupport = useSetting( 'spacing.blockGap' );
 		const hasBlockGapStylesSupport = blockGapSupport !== null;
 		const blockGapValue =
-			style?.spacing?.blockGap ?? 'var( --wp--style--block-gap )';
+			style?.spacing?.blockGap?.top ?? 'var( --wp--style--block-gap )';
 
 		let output =
 			!! contentSize || !! wideSize

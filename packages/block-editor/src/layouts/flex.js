@@ -88,8 +88,15 @@ export default {
 		const { orientation = 'horizontal' } = layout;
 		const blockGapSupport = useSetting( 'spacing.blockGap' );
 		const hasBlockGapStylesSupport = blockGapSupport !== null;
-		const blockGapValue =
-			style?.spacing?.blockGap ?? 'var( --wp--style--block-gap, 0.5em )';
+		const blockGapStyleValue = style?.spacing?.blockGap;
+		let blockGapValue = 'var( --wp--style--block-gap, 0.5em )';
+
+		if ( blockGapStyleValue ) {
+			const blockGapRow = style?.spacing?.blockGap?.top || '0';
+			const blockGapColumn = style?.spacing?.blockGap?.left || '0';
+			blockGapValue = `${ blockGapRow } ${ blockGapColumn }`;
+		}
+
 		const justifyContent =
 			justifyContentMap[ layout.justifyContent ] ||
 			justifyContentMap.left;
