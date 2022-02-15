@@ -241,9 +241,9 @@ export function migrateFeaturePreferencesToPreferencesStore(
 	const state = persistence.get();
 
 	// Features most recently (and briefly) lived in the interface package.
-	// If data exists their prioritize using that. If not also check the
-	// original package as the user may have updated from an older block editor
-	// version.
+	// If data exists there, prioritize using that for the migration. If not
+	// also check the original package as the user may have updated from an
+	// older block editor version.
 	const interfaceFeatures =
 		state[ interfaceStoreName ]?.preferences?.features?.[ sourceStoreName ];
 	const sourceFeatures = state[ sourceStoreName ]?.preferences?.features;
