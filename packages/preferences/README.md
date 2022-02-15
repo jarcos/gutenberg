@@ -22,12 +22,12 @@ Set the default values for any features on editor initialization:
 
 ```js
 import { dispatch } from '@wordpress/data';
-import { store as interfaceStore } from '@wordpress/interface';
+import { store as preferencesStore } from '@wordpress/preferences';
 
 function initialize() {
 	// ...
 
-	dispatch( interfaceStore ).setFeatureDefaults(
+	dispatch( preferencesStore ).setFeatureDefaults(
 		'namespace/editor-or-plugin-name',
 		{
 			myFeatureName: true,
@@ -42,13 +42,13 @@ Use the `toggleFeature` action and the `isFeatureActive` selector to toggle feat
 
 ```js
 wp.data
-	.select( 'core/interface' )
+	.select( 'core/preferences' )
 	.isFeatureActive( 'namespace/editor-or-plugin-name', 'myFeatureName' ); // true
 wp.data
-	.dispatch( 'core/interface' )
+	.dispatch( 'core/preferences' )
 	.toggleFeature( 'namespace/editor-or-plugin-name', 'myFeatureName' );
 wp.data
-	.select( 'core/interface' )
+	.select( 'core/preferences' )
 	.isFeatureActive( 'namespace/editor-or-plugin-name', 'myFeatureName' ); // false
 ```
 
