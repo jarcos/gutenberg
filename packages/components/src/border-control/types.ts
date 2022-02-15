@@ -9,7 +9,7 @@ export type Color = {
 	color: string;
 };
 
-export type BorderControlProps = {
+export type ColorProps = {
 	/**
 	 * An array of color definitions. This may also be a multi-dimensional array
 	 * where colors are organized by multiple origins.
@@ -25,51 +25,6 @@ export type BorderControlProps = {
 	 */
 	enableAlpha?: boolean;
 	/**
-	 * This controls whether to include border style options within the
-	 * `BorderDropdown` sub-component.
-	 */
-	enableStyle?: boolean;
-	/**
-	 * Provides control over whether the label will only be visible to screen
-	 * readers.
-	 */
-	hideLabelFromVision?: boolean;
-	/**
-	 * This flags the `BorderControl` to render with a more compact appearance.
-	 * It restricts the width of the control and prevents it from expanding to
-	 * take up additional space.
-	 */
-	isCompact?: boolean;
-	/**
-	 * If provided, a label will be generated using this as the content.
-	 */
-	label?: string;
-	/**
-	 * A callback function invoked when the border value is changed via an
-	 * interaction that selects or clears, border color, style, or width.
-	 */
-	onChange: ( value?: Border ) => void;
-	/**
-	 * If opted into, sanitizing the border means that if no width or color have
-	 * been selected, the border style is also cleared and `undefined`
-	 * is returned as the new border value.
-	 */
-	shouldSanitizeBorder?: boolean;
-	/**
-	 * An object representing a border or `undefined`. Used to set the current
-	 * border configuration for this component.
-	 */
-	value?: Border;
-	/**
-	 * Controls the visual width of the `BorderControl`.
-	 */
-	width?: string;
-	/**
-	 * Flags whether this `BorderControl` should also render a `RangeControl`
-	 * for additional control over a border's width.
-	 */
-	withSlider?: boolean;
-	/**
 	 * This is passed on to the color related sub-components which need to be
 	 * made aware of whether the colors prop contains multiple origins.
 	 */
@@ -81,27 +36,65 @@ export type BorderControlProps = {
 	__experimentalIsRenderedInSidebar?: boolean;
 };
 
-export type DropdownProps = {
+export type LabelProps = {
+	/**
+	 * Provides control over whether the label will only be visible to
+	 * screen readers.
+	 */
+	hideLabelFromVision?: boolean;
+	/**
+	 * If provided, a label will be generated using this as the content.
+	 */
+	label?: string;
+};
+
+export type BorderControlProps = ColorProps &
+	LabelProps & {
+		/**
+		 * This controls whether to include border style options within the
+		 * `BorderDropdown` sub-component.
+		 */
+		enableStyle?: boolean;
+		/**
+		 * This flags the `BorderControl` to render with a more compact appearance.
+		 * It restricts the width of the control and prevents it from expanding to
+		 * take up additional space.
+		 */
+		isCompact?: boolean;
+		/**
+		 * A callback function invoked when the border value is changed via an
+		 * interaction that selects or clears, border color, style, or width.
+		 */
+		onChange: ( value?: Border ) => void;
+		/**
+		 * If opted into, sanitizing the border means that if no width or color have
+		 * been selected, the border style is also cleared and `undefined`
+		 * is returned as the new border value.
+		 */
+		shouldSanitizeBorder?: boolean;
+		/**
+		 * An object representing a border or `undefined`. Used to set the current
+		 * border configuration for this component.
+		 */
+		value?: Border;
+		/**
+		 * Controls the visual width of the `BorderControl`.
+		 */
+		width?: string;
+		/**
+		 * Flags whether this `BorderControl` should also render a `RangeControl`
+		 * for additional control over a border's width.
+		 */
+		withSlider?: boolean;
+	};
+
+export type DropdownProps = ColorProps & {
 	/**
 	 * An object representing a border or `undefined`. This component will
 	 * extract the border color and style selections from this object to use as
 	 * values for its popover controls.
 	 */
 	border?: Border;
-	/**
-	 * An array of color definitions. This may also be a multi-dimensional array
-	 * where colors are organized by multiple origins.
-	 */
-	colors?: Color[];
-	/**
-	 * This toggles the ability to choose custom colors via the `ColorPalette`.
-	 */
-	disableCustomColors?: boolean;
-	/**
-	 * This controls whether the alpha channel will be offered via the
-	 * `ColorPalette`'s `ColorPicker`.
-	 */
-	enableAlpha?: boolean;
 	/**
 	 * This controls whether to render border style options.
 	 */
@@ -116,28 +109,9 @@ export type DropdownProps = {
 	 * to a non-zero value.
 	 */
 	previousStyleSelection?: string;
-	/**
-	 * This is passed on to the `ColorPalette` which needs to be made aware of
-	 * whether the colors prop contains multiple origins.
-	 */
-	__experimentalHasMultipleOrigins?: boolean;
-	/**
-	 * This is passed on to the `ColorPalette` so it may render more effectively
-	 * when used within a sidebar.
-	 */
-	__experimentalIsRenderedInSidebar?: boolean;
 };
 
-export type StylePickerProps = {
-	/**
-	 * Provides control over whether the label will only be visible to
-	 * screen readers.
-	 */
-	hideLabelFromVision?: boolean;
-	/**
-	 * If provided, a label will be generated using this as the content.
-	 */
-	label?: string;
+export type StylePickerProps = LabelProps & {
 	/**
 	 * A callback function invoked when a border style is selected or cleared.
 	 */
@@ -151,10 +125,8 @@ export type StylePickerProps = {
 };
 
 export type PopoverProps = {
+	/**
+	 * Callback function to invoke when closing the border dropdown's popover.
+	 */
 	onClose: () => void;
-};
-
-export type LabelProps = {
-	label?: string;
-	hideLabelFromVision?: boolean;
 };
