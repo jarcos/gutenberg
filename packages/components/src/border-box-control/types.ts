@@ -11,8 +11,8 @@ export type Borders = {
 };
 
 export type AnyBorder = Border | Borders | undefined;
-export type BorderProp = 'color' | 'style' | 'width';
-export type BorderSide = 'top' | 'right' | 'bottom' | 'left';
+export type BorderProp = keyof Border;
+export type BorderSide = keyof Borders;
 
 export type BorderBoxControlProps = ColorProps &
 	LabelProps & {

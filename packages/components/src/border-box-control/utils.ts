@@ -82,14 +82,21 @@ export const getSplitBorders = ( border?: Border ) => {
 		left: border,
 	};
 };
+
 export const getBorderDiff = ( original: Border, updated: Border ) => {
 	const diff: Border = {};
 
-	borderProps.forEach( ( prop ) => {
-		if ( original?.[ prop ] !== updated?.[ prop ] ) {
-			diff[ prop ] = updated?.[ prop ];
-		}
-	} );
+	if ( original.color !== updated.color ) {
+		diff.color = updated.color;
+	}
+
+	if ( original.style !== updated.style ) {
+		diff.style = updated.style;
+	}
+
+	if ( original.width !== updated.width ) {
+		diff.width = updated.width;
+	}
 
 	return diff;
 };
@@ -101,7 +108,7 @@ export const getCommonBorder = ( borders?: Borders ) => {
 
 	const colors: ( CSSProperties[ 'borderColor' ] | undefined )[] = [];
 	const styles: ( CSSProperties[ 'borderStyle' ] | undefined )[] = [];
-	const widths: ( string | undefined )[] = [];
+	const widths: ( CSSProperties[ 'borderWidth' ] | undefined )[] = [];
 
 	sides.forEach( ( side ) => {
 		colors.push( borders[ side ]?.color );

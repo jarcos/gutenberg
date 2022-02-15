@@ -6,7 +6,7 @@ import type { CSSProperties } from 'react';
 export type Border = {
 	color?: CSSProperties[ 'borderColor' ];
 	style?: CSSProperties[ 'borderStyle' ];
-	width?: string;
+	width?: CSSProperties[ 'borderWidth' ];
 };
 
 export type Color = {
