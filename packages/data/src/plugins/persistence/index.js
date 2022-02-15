@@ -224,11 +224,11 @@ function persistencePlugin( registry, pluginOptions ) {
 
 /**
  * Move the 'features' object in local storage from the sourceStoreName to the
- * interface store.
+ * preferences store.
  *
  * @param {Object} persistence     The persistence interface.
  * @param {string} sourceStoreName The name of the store that has persisted
- *                                 preferences to migrate to the interface
+ *                                 preferences to migrate to the preferences
  *                                 package.
  */
 export function migrateFeaturePreferencesToPreferencesStore(
