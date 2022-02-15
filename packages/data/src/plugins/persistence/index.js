@@ -231,40 +231,70 @@ function persistencePlugin( registry, pluginOptions ) {
  *                                 preferences to migrate to the interface
  *                                 package.
  */
-export function migrateFeaturePreferencesToInterfaceStore(
+export function migrateFeaturePreferencesToPreferencesStore(
 	persistence,
 	sourceStoreName
 ) {
+	const preferencesStoreName = 'core/preferences';
 	const interfaceStoreName = 'core/interface';
-	const state = persistence.get();
-	const sourcePreferences = state[ sourceStoreName ]?.preferences;
-	const sourceFeatures = sourcePreferences?.features;
 
-	if ( sourceFeatures ) {
+	const state = persistence.get();
+
+	// Features most recently (and briefly) lived in the interface package.
+	// If data exists their prioritize using that. If not also check the
+	// original package as the user may have updated from an older block editor
+	// version.
+	const interfaceFeatures =
+		state[ interfaceStoreName ]?.preferences?.features?.[ sourceStoreName ];
+	const sourceFeatures = state[ sourceStoreName ]?.preferences?.features;
+	const featuresToMigrate = interfaceFeatures
+		? interfaceFeatures
+		: sourceFeatures;
+
+	if ( featuresToMigrate ) {
 		const targetFeatures =
-			state[ interfaceStoreName ]?.preferences?.features;
+			state[ preferencesStoreName ]?.preferences?.features;
 
 		// Avoid migrating features again if they've previously been migrated.
 		if ( ! targetFeatures?.[ sourceStoreName ] ) {
 			// Set the feature values in the interface store, the features
 			// object is keyed by 'scope', which matches the store name for
 			// the source.
-			persistence.set( interfaceStoreName, {
+			persistence.set( preferencesStoreName, {
 				preferences: {
 					features: {
 						...targetFeatures,
-						[ sourceStoreName ]: sourceFeatures,
+						[ sourceStoreName ]: featuresToMigrate,
 					},
 				},
 			} );
 
-			// Remove feature preferences from the source.
-			persistence.set( sourceStoreName, {
-				preferences: {
-					...sourcePreferences,
-					features: undefined,
-				},
-			} );
+			// Remove migrated feature preferences from `interface`.
+			if ( interfaceFeatures ) {
+				const otherInterfaceFeatures =
+					state[ interfaceStoreName ]?.preferences?.features;
+
+				persistence.set( interfaceStoreName, {
+					preferences: {
+						features: {
+							...otherInterfaceFeatures,
+							[ sourceStoreName ]: undefined,
+						},
+					},
+				} );
+			}
+
+			// Remove migrated feature preferences from the source.
+			if ( sourceFeatures ) {
+				const sourcePreferences = state[ sourceStoreName ]?.preferences;
+
+				persistence.set( sourceStoreName, {
+					preferences: {
+						...sourcePreferences,
+						features: undefined,
+					},
+				} );
+			}
 		}
 	}
 }
@@ -277,15 +307,18 @@ export function migrateFeaturePreferencesToInterfaceStore(
 persistencePlugin.__unstableMigrate = ( pluginOptions ) => {
 	const persistence = createPersistenceInterface( pluginOptions );
 
-	migrateFeaturePreferencesToInterfaceStore(
+	migrateFeaturePreferencesToPreferencesStore(
 		persistence,
 		'core/edit-widgets'
 	);
-	migrateFeaturePreferencesToInterfaceStore(
+	migrateFeaturePreferencesToPreferencesStore(
 		persistence,
 		'core/customize-widgets'
 	);
-	migrateFeaturePreferencesToInterfaceStore( persistence, 'core/edit-post' );
+	migrateFeaturePreferencesToPreferencesStore(
+		persistence,
+		'core/edit-post'
+	);
 };
 
 export default persistencePlugin;
