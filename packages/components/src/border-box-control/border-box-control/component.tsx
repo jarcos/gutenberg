@@ -16,7 +16,8 @@ import { VisuallyHidden } from '../../visually-hidden';
 import { contextConnect, WordPressComponentProps } from '../../ui/context';
 import { useBorderBoxControl } from './hook';
 
-import type { BorderBoxControlProps, LabelProps } from '../types';
+import type { BorderBoxControlProps } from '../types';
+import type { LabelProps } from '../../border-control/types';
 
 const BorderLabel = ( props: LabelProps ) => {
 	const { label, hideLabelFromVision } = props;
