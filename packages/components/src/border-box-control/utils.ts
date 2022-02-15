@@ -1,4 +1,9 @@
 /**
+ * External dependencies
+ */
+import type { CSSProperties } from 'react';
+
+/**
  * Internal dependencies
  */
 import type { Border } from '../border-control/types';
@@ -94,8 +99,8 @@ export const getCommonBorder = ( borders?: Borders ) => {
 		return undefined;
 	}
 
-	const colors: ( string | undefined )[] = [];
-	const styles: ( string | undefined )[] = [];
+	const colors: ( CSSProperties[ 'borderColor' ] | undefined )[] = [];
+	const styles: ( CSSProperties[ 'borderStyle' ] | undefined )[] = [];
 	const widths: ( string | undefined )[] = [];
 
 	sides.forEach( ( side ) => {

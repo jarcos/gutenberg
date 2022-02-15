@@ -1,12 +1,17 @@
+/**
+ * External dependencies
+ */
+import type { CSSProperties } from 'react';
+
 export type Border = {
-	color?: string;
-	style?: string;
+	color?: CSSProperties[ 'borderColor' ];
+	style?: CSSProperties[ 'borderStyle' ];
 	width?: string;
 };
 
 export type Color = {
 	name: string;
-	color: string;
+	color: CSSProperties[ 'color' ];
 };
 
 export type ColorProps = {
